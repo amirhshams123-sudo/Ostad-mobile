@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="استاد موبایل">
+<meta name="theme-color" content="#0f172a">
+<title>استاد موبایل — عیب‌یابی</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    background: #0a0f1e;
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e2d4a 100%);
+    border-bottom: 1px solid #1e3a5f;
+    padding: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .logo-badge {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    border-radius: 10px;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .header-title { font-size: 17px; font-weight: 900; color: #f1f5f9; }
+  .header-sub { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    background: #0f172a;
+    border-bottom: 1px solid #1e293b;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .tab {
+    flex: 1;
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+
+  /* MAIN */
+  .content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    margin-top: 20px;
+  }
+  .section-title:first-child { margin-top: 0; }
+
+  /* PRICE RANGE SELECTOR */
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .price-btn {
+    background: #1e293b;
+    border: 1.5px solid #334155;
+    border-radius: 10px;
+    padding: 12px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .price-btn.selected {
+    background: linear-gradient(135deg, #1e3a5f, #1e40af);
+    border-color: #3b82f6;
+  }
+  .price-btn .price-label { font-size: 13px; font-weight: 700; color: #f1f5f9; }
+  .price-btn .price-sub { font-size: 10px; color: #64748b; margin-top: 3px; }
+  .price-btn.selected .price-sub { color: #93c5fd; }
+
+  /* SYMPTOMS */
+  .symptoms-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .symptom-btn {
+    background: #1e293b;
+    border: 1.5px solid #334155;
+    border-radius: 10px;
+    padding: 11px 12px;
+    text-align: right;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+    font-size: 13px;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .symptom-btn.selected {
+    background: linear-gradient(135deg, #1e3a5f, #1e40af);
+    border-color: #3b82f6;
+    color: #fff;
+    font-weight: 600;
+  }
+  .symptom-icon { font-size: 16px; flex-shrink: 0; }
+
+  /* DIAGNOSE BUTTON */
+  .diagnose-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.2s;
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    color: #fff;
+  }
+  .diagnose-btn:disabled {
+    background: #1e293b;
+    color: #475569;
+    cursor: not-allowed;
+  }
+  .reset-btn {
+    width: 100%;
+    padding: 11px;
+    border-radius: 10px;
+    border: 1.5px solid #334155;
+    background: transparent;
+    font-family: inherit;
+    font-size: 13px;
+    color: #64748b;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  /* RESULTS */
+  .total-price-card {
+    background: linear-gradient(135deg, #064e3b, #065f46);
+    border: 1px solid #10b981;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .total-label { font-size: 11px; color: #6ee7b7; margin-bottom: 6px; }
+  .total-ajrat { font-size: 13px; color: #a7f3d0; margin-bottom: 4px; }
+  .total-final { font-size: 16px; font-weight: 700; color: #fff; }
+
+  .result-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .result-title { font-size: 14px; font-weight: 700; color: #f1f5f9; }
+  .difficulty-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .info-box {
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .info-box-title { font-size: 10px; font-weight: 700; margin-bottom: 8px; }
+  .info-item {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-bottom: 5px;
+    display: flex;
+    gap: 6px;
+    line-height: 1.5;
+  }
+  .info-dot { flex-shrink: 0; margin-top: 1px; }
+
+  .price-row {
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .price-row-inner { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .price-row-label { font-size: 11px; color: #64748b; }
+  .price-row-val { font-size: 12px; font-weight: 600; }
+  .price-row-total { display: flex; justify-content: space-between; align-items: center; padding-top: 6px; border-top: 1px solid #1e293b; margin-top: 4px; }
+  .price-row-total-label { font-size: 11px; color: #94a3b8; }
+  .price-row-total-val { font-size: 13px; font-weight: 700; color: #10b981; }
+
+  .disclaimer {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.8;
+  }
+
+  /* GUIDE TAB */
+  .guide-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .guide-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #60a5fa;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .guide-step {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .guide-num {
+    background: #1e40af;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .guide-text { font-size: 13px; color: #cbd5e1; line-height: 1.6; }
+
+  /* INSTALL NOTICE */
+  .install-card {
+    background: linear-gradient(135deg, #1e1a2e, #2d1b69);
+    border: 1px solid #7c3aed;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .install-title { font-size: 13px; font-weight: 700; color: #a78bfa; margin-bottom: 8px; }
+  .install-text { font-size: 12px; color: #c4b5fd; line-height: 1.8; }
+
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="logo-badge">🔧</div>
+    <div>
+      <div class="header-title">استاد موبایل</div>
+      <div class="header-sub">عیب‌یابی و قیمت‌گذاری حرفه‌ای</div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('diagnose')">🔍 عیب‌یابی</div>
+  <div class="tab" onclick="showTab('guide')">📋 راهنما</div>
+</div>
+
+<!-- DIAGNOSE TAB -->
+<div id="tab-diagnose" class="content">
+
+  <div class="install-card">
+    <div class="install-title">💡 نصب روی گوشی</div>
+    <div class="install-text">
+      این فایل رو در مرورگر باز کن، سپس از منو گزینه «Add to Home Screen» یا «افزودن به صفحه اصلی» رو بزن تا مثل یه اپ روی گوشیت باشه — بدون نیاز به اینترنت!
+    </div>
+  </div>
+
+  <div class="section-title">۱. رنج قیمت گوشی مشتری</div>
+  <div class="price-grid">
+    <div class="price-btn" onclick="selectPrice(this, 1)" data-tier="1">
+      <div class="price-label">زیر ۵ میلیون</div>
+      <div class="price-sub">میان‌رده پایین</div>
+    </div>
+    <div class="price-btn" onclick="selectPrice(this, 2)" data-tier="2">
+      <div class="price-label">۵ تا ۱۵ میلیون</div>
+      <div class="price-sub">میان‌رده</div>
+    </div>
+    <div class="price-btn" onclick="selectPrice(this, 3)" data-tier="3">
+      <div class="price-label">۱۵ تا ۳۰ میلیون</div>
+      <div class="price-sub">پرچم‌دار</div>
+    </div>
+    <div class="price-btn" onclick="selectPrice(this, 4)" data-tier="4">
+      <div class="price-label">بالای ۳۰ میلیون</div>
+      <div class="price-sub">فلگ‌شیپ / آیفون</div>
+    </div>
+  </div>
+
+  <div class="section-title">۲. علائم گوشی (چند تا قابل انتخاب)</div>
+  <div class="symptoms-grid" id="symptomsGrid"></div>
+
+  <button class="diagnose-btn" id="diagnoseBtn" onclick="diagnose()" disabled>
+    تشخیص عیب و قیمت‌گذاری
+  </button>
+  <button class="reset-btn" onclick="resetAll()">پاک کردن همه</button>
+
+  <div id="results"></div>
+</div>
+
+<!-- GUIDE TAB -->
+<div id="tab-guide" class="content hidden">
+
+  <div class="guide-card">
+    <div class="guide-title">💰 سیستم قیمت‌گذاری اتحادیه تهران</div>
+    <div class="guide-step">
+      <div class="guide-num">۱</div>
+      <div class="guide-text">قیمت گوشی مشتری رو تعیین کن — اتحادیه بر اساس ارزش گوشی نرخ‌گذاری می‌کنه</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">۲</div>
+      <div class="guide-text">اجرت کار (دستمزد) + قیمت قطعه = قیمت نهایی به مشتری</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">۳</div>
+      <div class="guide-text">هیچ‌وقت قبل از عیب‌یابی کامل قیمت قطعی نده — بگو «باید بررسی کنم»</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">۴</div>
+      <div class="guide-text">برای کارهای برد و IC، قیمت توافقی + مدل دقیق گوشی رو مشخص کن</div>
+    </div>
+  </div>
+
+  <div class="guide-card">
+    <div class="guide-title">🔍 روش عیب‌یابی صحیح</div>
+    <div class="guide-step">
+      <div class="guide-num">۱</div>
+      <div class="guide-text">از مشتری بپرس: افتاد؟ آب خورد؟ از کِی؟ قبلاً تعمیر شده؟</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">۲</div>
+      <div class="guide-text">ظاهر گوشی رو چک کن — ترک، شکستگی، نشانه آب‌خوردگی</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">۳</div>
+      <div class="guide-text">از ساده‌ترین احتمال شروع کن — کانکتور شل، کابل معیوب، نرم‌افزار</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">۴</div>
+      <div class="guide-text">با قطعه سالم تست کن قبل از نتیجه‌گیری</div>
+    </div>
+  </div>
+
+  <div class="guide-card">
+    <div class="guide-title">⚠️ نکات مهم</div>
+    <div class="guide-step">
+      <div class="guide-num">!</div>
+      <div class="guide-text">گوشی آب‌خورده: همیشه ریسک خاموشی بده — قیمت قطعی نده</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">!</div>
+      <div class="guide-text">تعمیر برد و IC: حتماً حضوری ببین، قیمت تلفنی نده</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">!</div>
+      <div class="guide-text">Calibration LCD سامسونگ و Program کردن LCD آیفون: ۱۵۰ هزار تومان جداگانه</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SYMPTOMS = [
+  { id: 'no_power', label: 'روشن نمیشه', icon: '⚡' },
+  { id: 'no_charge', label: 'شارژ نمیگیره', icon: '🔌' },
+  { id: 'no_display', label: 'صفحه خاموشه', icon: '🖥️' },
+  { id: 'broken_screen', label: 'صفحه شکسته', icon: '💔' },
+  { id: 'no_touch', label: 'تاچ کار نمیکنه', icon: '👆' },
+  { id: 'no_sound', label: 'صدا نداره', icon: '🔇' },
+  { id: 'no_signal', label: 'آنتن / سیم‌کارت', icon: '📡' },
+  { id: 'no_wifi', label: 'وای‌فای / بلوتوث', icon: '📶' },
+  { id: 'no_camera', label: 'دوربین خراب', icon: '📷' },
+  { id: 'water', label: 'آب خورده', icon: '💧' },
+  { id: 'restart', label: 'ریستارت / هنگ', icon: '🔄' },
+  { id: 'biometric', label: 'Face/Touch ID', icon: '👁️' },
+  { id: 'battery', label: 'باتری ضعیف', icon: '🪫' },
+  { id: 'hot', label: 'داغ میکنه', icon: '🔥' },
+  { id: 'frp', label: 'قفل FRP', icon: '🔒' },
+  { id: 'software', label: 'مشکل نرم‌افزار', icon: '💻' },
+];
+
+// اجرت بر اساس تیر قیمتی (تومان)
+const AJRAT = {
+  1: { simple: 80000,  mid: 150000, hard: 300000,  board: 500000  },
+  2: { simple: 150000, mid: 250000, hard: 500000,  board: 900000  },
+  3: { simple: 250000, mid: 400000, hard: 800000,  board: 1500000 },
+  4: { simple: 400000, mid: 700000, hard: 1500000, board: 2500000 },
+};
+
+// تخمین قطعه (تومان) — مستقل از تیر
+const DATA = {
+  no_power:      { causes:['باتری ضعیف یا خالی','آی‌سی شارژ / PMIC','فیوز یا دیود سوخته','کانکتور باتری شل'], steps:['ولتاژ باتری رو با مولتی‌متر چک کن','جریان شارژ رو با آمپرمتر بررسی کن','برد رو زیر میکروسکوپ ببین'], level:'hard', partMin:200000, partMax:2000000 },
+  no_charge:     { causes:['پورت شارژ خراب','آی‌سی شارژ مشکل داره','باتری خراب','کابل / شارژر معیوب'], steps:['اول کابل و شارژر رو عوض کن','پورت رو زیر میکروسکوپ ببین','جریان رو با i2C چک کن'], level:'mid', partMin:150000, partMax:1500000 },
+  no_display:    { causes:['کانکتور ال‌سی‌دی شل','ال‌سی‌دی خراب','آی‌سی دیسپلی مشکل داره','ولتاژ بک‌لایت'], steps:['کانکتور رو محکم کن','با صفحه سالم تست کن','ولتاژ بک‌لایت رو چک کن'], level:'mid', partMin:400000, partMax:4000000 },
+  broken_screen: { causes:['ضربه / افتادن','فشار روی صفحه'], steps:['مدل دقیق رو تشخیص بده','قطعه مناسب تهیه کن','تاچ و دوربین رو بعد از تعویض تست کن'], level:'simple', partMin:600000, partMax:8000000 },
+  no_touch:      { causes:['کانکتور تاچ شل','آی‌سی تاچ خراب','صفحه آسیب دیده','نرم‌افزار'], steps:['ریستارت کن','کانکتور رو محکم کن','با صفحه سالم تست کن'], level:'mid', partMin:200000, partMax:3000000 },
+  no_sound:      { causes:['اسپیکر خراب','میکروفون خراب','آی‌سی صدا مشکل داره','پورت هدفون'], steps:['با هدفون تست کن','اسپیکر رو تست کن','آی‌سی صدا بررسی کن'], level:'simple', partMin:100000, partMax:1200000 },
+  no_signal:     { causes:['سیم‌کارت آسیب دیده','سینی سیم‌کارت خراب','آی‌سی بیسبند','آنتن قطع'], steps:['سیم‌کارت رو در گوشی دیگه تست کن','سینی رو بررسی کن','آنتن رو چک کن'], level:'hard', partMin:200000, partMax:3000000 },
+  no_wifi:       { causes:['آی‌سی وای‌فای','آنتن وای‌فای قطع','نرم‌افزار'], steps:['ریست شبکه بزن','آنتن رو چک کن','آی‌سی بررسی کن'], level:'hard', partMin:300000, partMax:2000000 },
+  no_camera:     { causes:['کانکتور دوربین شل','دوربین خراب','آی‌سی دوربین','نرم‌افزار'], steps:['اپ رو ریستارت کن','کانکتور رو محکم کن','دوربین رو تعویض کن'], level:'simple', partMin:300000, partMax:4000000 },
+  water:         { causes:['خوردگی مدار','اتصال کوتاه روی برد','سوختگی IC'], steps:['فوری خاموش کن','باتری جدا کن','برد رو با IPA 99% تمیز کن','زیر میکروسکوپ بررسی کن'], level:'board', partMin:500000, partMax:6000000 },
+  restart:       { causes:['نرم‌افزار خراب','باتری ضعیف','برد مشکل داره','حافظه معیوب'], steps:['اول فلش بزن','باتری رو چک کن','برد رو بررسی کن'], level:'mid', partMin:150000, partMax:2500000 },
+  biometric:     { causes:['سنسور آسیب دیده','صفحه بدون انتقال سنسور عوض شده','نرم‌افزار'], steps:['بررسی کن صفحه قبلاً عوض شده؟','سنسور رو چک کن','در آیفون نیاز به برنامه‌ریزی مجدد داره'], level:'hard', partMin:400000, partMax:4000000 },
+  battery:       { causes:['باتری فرسوده','اپ‌های پس‌زمینه','آی‌سی شارژ مشکل داره'], steps:['سلامت باتری رو چک کن','باتری رو تعویض کن'], level:'simple', partMin:250000, partMax:1200000 },
+  hot:           { causes:['باتری خراب','آی‌سی شارژ','اتصال کوتاه روی برد','اپ‌های سنگین'], steps:['مصرف باتری رو بررسی کن','جریان شارژ با آمپرمتر','برد رو بررسی کن'], level:'mid', partMin:200000, partMax:2500000 },
+  frp:           { causes:['ریست فکتوری بدون خروج از اکانت','فروش بدون خروج'], steps:['مدل و اندروید ورژن رو مشخص کن','روش مناسب FRP bypass رو انتخاب کن','با باکس یا ADB انجام بده'], level:'simple', partMin:0, partMax:0 },
+  software:      { causes:['آپدیت ناموفق','فلش اشتباه','ویروس / بدافزار','حافظه خراب'], steps:['بکاپ بگیر اگه ممکنه','فلش مناسب پیدا کن','با ابزار مناسب فلش بزن'], level:'simple', partMin:0, partMax:0 },
+};
+
+const LEVEL_COLORS = { simple:'#22c55e', mid:'#f59e0b', hard:'#f97316', board:'#ef4444' };
+const LEVEL_LABELS = { simple:'آسان', mid:'متوسط', hard:'سخت', board:'برد — خیلی سخت' };
+
+let selectedTier = null;
+let selectedSymptoms = [];
+
+// Build symptoms grid
+const grid = document.getElementById('symptomsGrid');
+SYMPTOMS.forEach(s => {
+  const btn = document.createElement('button');
+  btn.className = 'symptom-btn';
+  btn.id = 'sym-' + s.id;
+  btn.innerHTML = `<span class="symptom-icon">${s.icon}</span>${s.label}`;
+  btn.onclick = () => toggleSymptom(s.id, btn);
+  grid.appendChild(btn);
+});
+
+function selectPrice(el, tier) {
+  document.querySelectorAll('.price-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedTier = tier;
+  updateBtn();
+}
+
+function toggleSymptom(id, btn) {
+  const idx = selectedSymptoms.indexOf(id);
+  if (idx === -1) { selectedSymptoms.push(id); btn.classList.add('selected'); }
+  else { selectedSymptoms.splice(idx, 1); btn.classList.remove('selected'); }
+  updateBtn();
+}
+
+function updateBtn() {
+  const btn = document.getElementById('diagnoseBtn');
+  const ok = selectedTier && selectedSymptoms.length > 0;
+  btn.disabled = !ok;
+  btn.textContent = ok ? `تشخیص عیب (${selectedSymptoms.length} علامت)` : 'تشخیص عیب و قیمت‌گذاری';
+}
+
+function fmt(n) { return n.toLocaleString('fa-IR') + ' ت'; }
+
+function diagnose() {
+  const ajrat = AJRAT[selectedTier];
+  const results = selectedSymptoms.map(id => ({ id, sym: SYMPTOMS.find(s=>s.id===id), d: DATA[id] }));
+
+  let totalAjratMin = 0, totalAjratMax = 0, totalPartMin = 0, totalPartMax = 0;
+  results.forEach(r => {
+    const lvl = r.d.level;
+    totalAjratMin += ajrat[lvl] * 0.8;
+    totalAjratMax += ajrat[lvl];
+    totalPartMin += r.d.partMin;
+    totalPartMax += r.d.partMax;
+  });
+
+  let html = `
+    <div style="margin-top:24px">
+    <div class="total-price-card">
+      <div>
+        <div class="total-label">قیمت کل تخمینی</div>
+        <div class="total-ajrat">اجرت: ${fmt(Math.round(totalAjratMin))} — ${fmt(Math.round(totalAjratMax))}</div>
+        ${totalPartMin > 0 ? `<div class="total-ajrat">قطعه: ${fmt(totalPartMin)} — ${fmt(totalPartMax)}</div>` : ''}
+        <div class="total-final">جمع: ${fmt(Math.round(totalAjratMin + totalPartMin))} — ${fmt(Math.round(totalAjratMax + totalPartMax))}</div>
+      </div>
+      <span style="font-size:32px">💰</span>
+    </div>`;
+
+  results.forEach(r => {
+    const lvl = r.d.level;
+    const aj = ajrat[lvl];
+    const color = LEVEL_COLORS[lvl];
+    html += `
+    <div class="result-card">
+      <div class="result-header">
+        <span class="result-title">${r.sym.icon} ${r.sym.label}</span>
+        <span class="difficulty-badge" style="background:${color}22;color:${color};border:1px solid ${color}44">${LEVEL_LABELS[lvl]}</span>
+      </div>
+      <div class="two-col">
+        <div class="info-box">
+          <div class="info-box-title" style="color:#f59e0b">⚠️ دلایل</div>
+          ${r.d.causes.map(c=>`<div class="info-item"><span class="info-dot" style="color:#f59e0b">•</span>${c}</div>`).join('')}
+        </div>
+        <div class="info-box">
+          <div class="info-box-title" style="color:#60a5fa">🔍 مراحل</div>
+          ${r.d.steps.map((s,i)=>`<div class="info-item"><span class="info-dot" style="color:#60a5fa;min-width:14px">${i+1}.</span>${s}</div>`).join('')}
+        </div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-inner">
+          <span class="price-row-label">اجرت کار:</span>
+          <span class="price-row-val" style="color:#60a5fa">${fmt(Math.round(aj*0.8))} — ${fmt(aj)}</span>
+        </div>
+        ${r.d.partMin > 0 ? `<div class="price-row-inner"><span class="price-row-label">تخمین قطعه:</span><span class="price-row-val" style="color:#f59e0b">${fmt(r.d.partMin)} — ${fmt(r.d.partMax)}</span></div>` : '<div class="price-row-inner"><span class="price-row-label">قطعه:</span><span class="price-row-val" style="color:#22c55e">فقط اجرت</span></div>'}
+        ${r.d.partMin > 0 ? `<div class="price-row-total"><span class="price-row-total-label">جمع این مورد:</span><span class="price-row-total-val">${fmt(Math.round(aj*0.8)+r.d.partMin)} — ${fmt(aj+r.d.partMax)}</span></div>` : ''}
+      </div>
+    </div>`;
+  });
+
+  html += `<div class="disclaimer">⚠️ اجرت بر اساس نرخنامه اتحادیه تهران ۱۴۰۴ + رنج قیمتی گوشی محاسبه شده. قیمت قطعات تخمینی و بسته به برند، مدل، و نوع قطعه (اصل/غیراصل) متغیره. همیشه بعد از عیب‌یابی کامل قیمت نهایی اعلام کن.</div></div>`;
+
+  document.getElementById('results').innerHTML = html;
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetAll() {
+  selectedTier = null;
+  selectedSymptoms = [];
+  document.querySelectorAll('.price-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.symptom-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('results').innerHTML = '';
+  updateBtn();
+}
+
+function showTab(tab) {
+  document.getElementById('tab-diagnose').classList.toggle('hidden', tab !== 'diagnose');
+  document.getElementById('tab-guide').classList.toggle('hidden', tab !== 'guide');
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', (i===0 && tab==='diagnose') || (i===1 && tab==='guide'));
+  });
+}
+</script>
+</body>
+</html>
